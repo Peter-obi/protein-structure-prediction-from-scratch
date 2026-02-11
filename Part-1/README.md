@@ -1,7 +1,7 @@
 # Part 1 — PyTorch Foundations
 
 ## Goal
-Be able to implement attention + backprop without “mystery meat”.
+Be able to implement attention + backprop.
 
 ## Resources (do these)
 - PyTorch tensors/autograd tutorial:
