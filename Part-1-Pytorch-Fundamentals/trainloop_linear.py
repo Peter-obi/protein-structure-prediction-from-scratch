@@ -33,5 +33,5 @@ for epoch in range(20):
   optimizer.step()
   running_loss += loss.item()
   print(
-      f"Epoch:{epoch+1:03d}"
+      f"Epoch:{epoch+1:03d} "
       f"Loss:{loss:.2f}")
