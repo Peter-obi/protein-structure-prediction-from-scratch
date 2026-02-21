@@ -21,7 +21,7 @@ Be able to implement attention + backprop.
 - Fit a tiny synthetic regression; confirm loss decreases
 
 3) `attention_einsum.py`
-- Implement scaled dot-product attention with `einsum` (batched + multi-head):
+Implement scaled dot-product attention with `einsum` (batched + multi-head):
   - Q,K,V projections
   - reshape to `[B,H,N,Dh]`
   - `scores = einsum('bhid,bhjd->bhij', q, k) / sqrt(Dh)`
@@ -30,7 +30,7 @@ Be able to implement attention + backprop.
   - merge heads + output proj
 
 4) `transformer_block.py`
-- Wrap attention in a block:
+Wrap attention in a block:
   - LayerNorm
   - residual connection
   - dropout
