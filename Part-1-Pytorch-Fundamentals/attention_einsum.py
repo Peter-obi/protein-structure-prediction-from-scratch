@@ -30,5 +30,5 @@ class MultiHeadAttention(torch.nn.Module):
     attn_1 = self. dropout(self.softmax((torch.einsum('bhid,bhjd->bhij', q, k)) / math.sqrt(self.head_dim))) # divide to not make values big and softmax to convert scores to probabilities
     attn_2 = torch.einsum('bhij,bhjd->bhid', attn_1, v)
     attn_2_transposed = attn_2.transpose(1,2)
-    attn_2 = attn_2_transposed.view(BATCH_SIZE, SEQ_LENGTH, EMBED_DIM)
+    attn_2 = attn_2_transposed.reshape(BATCH_SIZE, SEQ_LENGTH, EMBED_DIM)
     x = self.out_proj(attn_2)
