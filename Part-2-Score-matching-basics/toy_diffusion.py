@@ -13,3 +13,10 @@ component_dist = D.Normal(means, stdev)
 gmm = D.MixtureSameFamily(categorical_dist, component_dist)
 samples = gmm.sample((1000,)) 
 samples.shape
+
+timesteps = 200
+betas = torch.linspace(0.0001, 0.02, 200)
+alphas = 1 - betas
+alphas_bar = torch.cumprod(alphas, dim=0)
+sqrt_aphas_cumprod = torch.sqrt(alphas_bar)
+sqrt_one_minus_alphas_cumprod = torch.sqrt(1 - alphas_bar)
