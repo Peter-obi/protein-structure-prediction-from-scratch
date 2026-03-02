@@ -21,7 +21,10 @@ sqrt_one_minus_alphas_cumprod = torch.sqrt(1 - alphas_bar)
 
 t = torch.zeros([128])
 embed_dim = 64
-half_dim = embed_dim//2
-frequencies = torch.exp(torch.arange(0, half_dim) * -torch.log(torch.tensor(10000.0))/(half_dim - 1))
-args = t.unsqueeze(-1) * frequencies.unsqueeze(0)
-embedding = torch.cat((torch.sin(args), torch.cos(args)), dim=-1)
+
+def get_timestep_embedding(t, embed_dim):
+  half_dim = embed_dim//2
+  frequencies = torch.exp(torch.arange(0, half_dim)* -torch.log(torch.tensor(10000.0))/(half_dim - 1))
+  args = t.unsqueeze(-1) * frequencies.unsqueeze(0)
+  embedding = torch.cat((torch.sin(args), torch.cos(args)), dim=-1)
+  return embedding
