@@ -1,43 +1,28 @@
 """
 1D VP-DIFFUSION TOY MODEL (GAUSSIAN MIXTURE)
-
-This script implements a minimal 1D diffusion model using the
-Variance Preserving (VP) discrete formulation. The objective is to
-learn the score function of a simple Gaussian Mixture Model (GMM)
-via denoising score matching.
-
-1) TARGET DISTRIBUTION
-
-We define a 3-mode Gaussian Mixture:
-
+Learn the score function of a simple Gaussian Mixture Model (GMM) via denoising score matching.
+Define a 3-mode Gaussian Mixture:
     Means   = [-3.0, 0.0, 3.0]
     Std     = 0.4 (shared)
     Weights = uniform
-
+    
 Sampling process:
     1. Sample mode index  k ~ Categorical(π)
     2. Sample coordinate  x0 ~ N(μ_k, σ²)
 
 This defines pdata(x), the distribution we want the model to learn.
-
-2) FORWARD DIFFUSION (VP SCHEDULE)
-
-We use a linear beta schedule over T = 200 steps:
-
+Then use a linear beta schedule over T = 200 steps:
     β_t ∈ [1e-4, 0.02]
     α_t = 1 - β_t
     ᾱ_t = ∏_{i=1}^t α_i
 
 Closed-form noisy sampling:
-
     x_t = sqrt(ᾱ_t) * x0 + sqrt(1 - ᾱ_t) * ε
     ε ~ N(0, I)
 
 This allows O(1) sampling of any timestep without recursive simulation.
 
 As t → T, x_t approaches N(0, I).
-
-3) MODEL ARCHITECTURE (NOISE PREDICTOR)
 
 The network learns:
 
@@ -61,8 +46,6 @@ Architecture design:
     Activation: SiLU (smooth, score-friendly)
 
 The output is a scalar noise prediction ε̂.
-
-4) TRAINING OBJECTIVE
 
 Denoising Score Matching (MSE on noise):
 
@@ -147,3 +130,7 @@ class DiffusionModel(torch.nn.Module):
     merge_proj = self.activation(merge_proj)
     out = self.output(merge_proj)
     return out
+      
+model = DiffusionModel()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+criterion = torch.nn.MSELoss()
